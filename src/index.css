@@ -1,0 +1,56 @@
+:root { font-family: 'Inter', sans-serif; }
+body { margin: 0; background-color: #f8fafc; color: #1e293b; overflow-x: hidden; }
+
+/* Navigation - Mobile Responsive */
+nav { 
+  display: flex; 
+  flex-wrap: wrap; 
+  align-items: center; 
+  padding: 1rem 5%; 
+  background: white; 
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+  gap: 15px; 
+}
+
+/* Push Admin to the right only on Desktop */
+@media (min-width: 768px) {
+  .admin-link { margin-left: auto; }
+}
+
+.container { 
+  max-width: 1000px; 
+  margin: 1rem auto; 
+  padding: 0 1.5rem; 
+}
+
+/* Grid that changes from 2 columns to 1 on Mobile */
+.grid-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.card { 
+  background: white; 
+  padding: 1.5rem; 
+  border-radius: 12px; 
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); 
+  transition: transform 0.2s;
+}
+
+.card:hover { transform: translateY(-3px); }
+
+.btn { 
+  background: #6366f1; 
+  color: white; 
+  border: none; 
+  padding: 0.7rem 1.2rem; 
+  border-radius: 8px; 
+  cursor: pointer; 
+  font-weight: 600;
+  width: 100%; /* Full width on mobile by default */
+}
+
+@media (min-width: 600px) {
+  .btn { width: auto; } /* Normal width on desktop */
+}
