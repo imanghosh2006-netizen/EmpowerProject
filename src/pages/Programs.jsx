@@ -1,47 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { supabase } from '../lib/supabase';
 
-export default function Programs() {
-  // 1. New State to track which video is playing
-  const [activeVideo, setActiveVideo] = useState(null);
+const Programs = () => {
+  const [lectures, setLectures] = useState([]);
 
-  const safetyCourses = [
-    { id: 3, title: "Street Awareness 101", trainer: "Coach Meera", videoId: "M4_m6S0GIsU" },
-    { id: 4, title: "Emergency Response", trainer: "Coach Vikram", videoId: "KVpxP3ZZtAc" }
-  ];
+  useEffect(() => {
+    const fetchLectures = async () => {
+      const { data, error } = await supabase.from('lectures').select('*');
+      if (error) console.error(error);
+      else setLectures(data);
+    };
+    fetchLectures();
+  }, []);
 
   return (
-    <div className="container">
-      <h1>Educational & Safety Modules</h1>
-
-      {/* 2. Real Activity: Video Player Section */}
-      {activeVideo && (
-        <div className="card" style={{ background: '#000', color: '#fff', textAlign: 'center' }}>
-          <h3>Now Playing: {activeVideo.title}</h3>
-          <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
-            <iframe 
-              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-              src={`https://www.youtube.com/embed/${activeVideo.id}`}
-              title="YouTube video player"
-              frameBorder="0"
-              allowFullScreen
-            ></iframe>
-          </div>
-          <button className="btn" style={{ marginTop: '10px', background: 'red' }} onClick={() => setActiveVideo(null)}>Close Player</button>
-        </div>
-      )}
-
-      <h3>Self-Defense Training</h3>
-      <div className="grid-layout">
-        {safetyCourses.map(course => (
-          <div key={course.id} className="card" style={{ borderLeft: '5px solid #6366f1' }}>
-            <h4>{course.title}</h4>
-            <p>Trainer: {course.trainer}</p>
-            <button className="btn" onClick={() => setActiveVideo({id: course.videoId, title: course.title})}>
-              Watch Session
-            </button>
+    <div className="p-8">
+      <h2 className="text-3xl mb-6">Available Modules</h2>
+      <div className="grid gap-4">
+        {lectures.map((item) => (
+          <div key={item.id} className="border p-4 rounded bg-white shadow">
+            <h3 className="font-bold text-lg">{item.title}</h3>
+            <p className="text-sm text-gray-500 mb-2">{item.category}</p>
+            <a href={item.video_url} target="_blank" className="text-blue-600 font-bold">Watch Video →</a>
           </div>
         ))}
       </div>
     </div>
   );
-}
+};
+
+export default Programs;
